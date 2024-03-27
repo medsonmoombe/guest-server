@@ -16,6 +16,7 @@ app.use(fileUpload());
 app.post('/upload', uploadController.uploadFile);
 app.get('/file', getFileController.getFile);
 
+// console.log("process.env.CLIENT_ID", process.env.CLIENT_SECRET, process.env.REDIRECT_URI, process.env.REFRESH_TOKEN)
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
