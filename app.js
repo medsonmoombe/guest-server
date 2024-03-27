@@ -3,7 +3,7 @@ const fileUpload = require('express-fileupload');
 const uploadController = require('./services/controllers/uploadController.js');
 const getFileController = require('./services/controllers/getFileController.js');
 const cors = require('cors');
-
+require('dotenv').config();
 
 const app = express();
 
