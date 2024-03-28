@@ -8,6 +8,7 @@ const app = express();
 
 // enable cors
 app.use(cors());
+
 // Middleware for file upload
 app.use(fileUpload());
 
