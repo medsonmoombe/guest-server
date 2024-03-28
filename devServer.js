@@ -10,7 +10,7 @@ const allowCors = fn => async(req, res) => {
         return;
       }
       return await fn(req, res);
-    };
+};
 
 app.use("/", allowCors(routes));
 app.listen(3000,function () {
