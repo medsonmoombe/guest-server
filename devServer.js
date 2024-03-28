@@ -1,4 +1,4 @@
-const app = require(".");
+const app = require("./index");
 const routes = require("./routes/router");
 app.use("/", routes);
 app.listen(3000,function () {
