@@ -14,10 +14,11 @@ const options = [
     })
   ];
 
-// enable cors
+
+
 app.use(options);
 
-// Middleware for file upload
+
 app.use(fileUpload());
 
 app.use(helmet());
