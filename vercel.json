@@ -1,12 +1,12 @@
 {
     "version": 2,
-    "builds": [
+  "builds": [
       {
         "src": "/devServer.js",
         "use": "@vercel/node"
       }
     ],
-    "routes": [
+   "routes": [
       {
         "src": "/(.*)",
         "dest": "/devServer.js"

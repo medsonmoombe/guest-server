@@ -9,7 +9,8 @@ const file = require('express').Router();
 const CLIENT_ID = "582486929557-8h8hpb0ltg0l2b7auj85sdo255opalot.apps.googleusercontent.com";
 const CLIENT_SECRET = "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";
 const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN = "1//0477-c7t0kmkmCgYIARAAGAQSNwF-L9IrTscUpA0VAAJXJUyCcv1wtR05kRMNRItCeYHdZvCOGL2_HiSFxDPUQxgq697E__ztNds";
+const REFRESH_TOKEN = "1//04sqWc8Z8HUzxCgYIARAAGAQSNwF-L9Irt7T2sT_9Jq4JsjzLh3xyUxsNi2CpZPwnKTJ3GLs89KhYLftRBoCuMD7qnF7gR9Wk-sg";
+
 
 // Create OAuth2 client
 const oauth2Client = new google.auth.OAuth2(
@@ -35,6 +36,7 @@ const oauth2Client = new google.auth.OAuth2(
       const response = await drive.files.get({ fileId, alt: 'media' }, { responseType: 'stream' });
       
       // Pipe file stream to response
+      
       response.data.pipe(res);
     } catch (error) {
       console.error('Error retrieving file:', error);
