@@ -29,7 +29,6 @@ async function getS3buckeckUrl() {
     return url;
 }
 
-  // Function to retrieve file from Google Drive
   file.get('/s3Url', async (req, res) => {
     try {
       const url = await getS3buckeckUrl()
