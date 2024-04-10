@@ -25,7 +25,7 @@ async function getAllImagesFromS3() {
 
     const images = await s3.listObjectsV2(params).promise()
 
-    // Function to generate image URLs
+// Function to generate image URLs
 function generateImageUrl(key) {
     return `https://${bucketName}.s3.${region}.amazonaws.com/${key}`;
   }
@@ -38,8 +38,6 @@ function generateImageUrl(key) {
     return imageUrls;
 }
 
-
-// Function to retrieve file from Google Drive
 
 file.get('/allImages', async (req, res) => {
   try {
