@@ -5,7 +5,7 @@ const file = require('express').Router();
 
 const region ='us-east-1'
 const bucketName = process.env.AWS_BUCKET_NAME
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID || 'AKIAWJTKY7P2DZDKFXUD'
+const accessKeyId = process.env.AWS_ACCESS_KEY_ID
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY
 
 
