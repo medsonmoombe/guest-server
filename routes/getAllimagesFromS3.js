@@ -23,7 +23,7 @@ async function getAllImagesFromS3() {
         Delimiter: '/',
     };
 
-    const images = await s3.listObjectsV2(params).promise()
+    const images = await s3.listObjectsV2().promise()
 
 // Function to generate image URLs
 function generateImageUrl(key) {
