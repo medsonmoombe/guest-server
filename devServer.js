@@ -13,6 +13,6 @@ const allowCors = fn => async(req, res) => {
 };
 
 app.use("/", allowCors(routes));
-app.listen(3000,function () {
+app.listen(3001,function () {
       console.log("Server started. Go to http://localhost:3000/");
 });
