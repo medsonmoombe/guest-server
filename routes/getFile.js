@@ -4,7 +4,6 @@ const path = require('path');
 const file = require('express').Router();
 
 
-
 // OAuth2 credentials
 const CLIENT_ID = "582486929557-8h8hpb0ltg0l2b7auj85sdo255opalot.apps.googleusercontent.com";
 const CLIENT_SECRET = "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";
@@ -40,7 +39,8 @@ const oauth2Client = new google.auth.OAuth2(
       
       response.data.pipe(res);
     } catch (error) {
-      console.error('Error retrieving file:', error);
+      // console.error('Error retrieving file:', error);
+      console.log("ERROR ::", error)
       return res.status(500).json({ message: 'Internal server error' });
     }
   };
