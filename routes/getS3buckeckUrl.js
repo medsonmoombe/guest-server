@@ -18,7 +18,7 @@ const s3 = new aws.S3({
 
 async function getS3buckeckUrl() {
     const randomBytes = promisify(crypto.randomBytes)
-    const imageName = Date.now() + `${(await randomBytes(5)).toString('hex')}`
+    const imageName = `${(await randomBytes(5)).toString('hex')}`
     const params = {
         Bucket: bucketName,
         Key: imageName,

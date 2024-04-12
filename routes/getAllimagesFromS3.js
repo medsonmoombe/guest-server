@@ -31,20 +31,26 @@ do {
 
   const images = await s3.listObjectsV2(params).promise();
 
+  const sortedImages = images.Contents.sort((a, b) => {
+    const dateA = new Date(a.LastModified);
+    const dateB = new Date(b.LastModified);
+    return dateB - dateA;
+  });
+
   // Function to generate image URLs
   function generateImageUrl(key) {
     return `https://${bucketName}.s3.${region}.amazonaws.com/${key}`;
   }
 
   // Extracting keys from the images response
-  const imageKeys = images.Contents.map(image => image.Key);
+  const imageKeys = sortedImages.Contents.map(image => image.Key);
 
   // Generate image URLs and add them to the result array
   const batchImageUrls = imageKeys.map(key => generateImageUrl(key));
   imageUrls.push(...batchImageUrls);
 
   // Set ContinuationToken for the next iteration
-  continuationToken = images.NextContinuationToken;
+  continuationToken = sortedImages.NextContinuationToken;
 
 } while (continuationToken);
     return imageUrls;
