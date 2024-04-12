@@ -18,7 +18,7 @@ const s3 = new aws.S3({
 
 async function getS3buckeckUrl() {
     const randomBytes = promisify(crypto.randomBytes)
-    const imageName = `${(await randomBytes(16)).toString('hex')}`
+    const imageName = Date.now() + `${(await randomBytes(5)).toString('hex')}`
     const params = {
         Bucket: bucketName,
         Key: imageName,
@@ -32,7 +32,6 @@ async function getS3buckeckUrl() {
   file.get('/s3Url', async (req, res) => {
     try {
       const url = await getS3buckeckUrl()
-      console.log('URL:', url)
       return res.status(200).json({ url })
     } catch (error) {
       console.error('Error retrieving file:', error);

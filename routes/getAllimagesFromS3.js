@@ -10,9 +10,6 @@ const accessKeyId = process.env.AWS_ACCESS_KEY_ID
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY
 
 
-console.log(process.env)
-
-
 const s3 = new aws.S3({
     region,
     accessKeyId,
@@ -21,23 +18,35 @@ const s3 = new aws.S3({
     });
 
 async function getAllImagesFromS3() {
-    const params = {
-        Bucket: bucketName,
-        Delimiter: '/',
+
+const imageUrls = [];
+  let continuationToken = null;
+do {
+  const params = {
+    Bucket: bucketName,
+    Delimiter: '/',
+    MaxKeys: 5,
+    ContinuationToken: continuationToken
   };
 
-    const images = await s3.listObjectsV2(params).promise()
+  const images = await s3.listObjectsV2(params).promise();
 
-// Function to generate image URLs
-function generateImageUrl(key) {
+  // Function to generate image URLs
+  function generateImageUrl(key) {
     return `https://${bucketName}.s3.${region}.amazonaws.com/${key}`;
   }
-  
+
   // Extracting keys from the images response
   const imageKeys = images.Contents.map(image => image.Key);
-  
-  // Generate image URLs
-  const imageUrls = imageKeys.map(key => generateImageUrl(key));
+
+  // Generate image URLs and add them to the result array
+  const batchImageUrls = imageKeys.map(key => generateImageUrl(key));
+  imageUrls.push(...batchImageUrls);
+
+  // Set ContinuationToken for the next iteration
+  continuationToken = images.NextContinuationToken;
+
+} while (continuationToken);
     return imageUrls;
 }
 
