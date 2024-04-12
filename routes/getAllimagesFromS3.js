@@ -31,11 +31,12 @@ do {
 
   const images = await s3.listObjectsV2(params).promise();
 
-  const sortedImages = images.Contents.sort((a, b) => {
-    const dateA = new Date(a.LastModified);
-    const dateB = new Date(b.LastModified);
-    return dateB - dateA;
-  });
+    // Sort the objects by LastModified date in descending order
+    const sortedObjects = images.Contents.sort((a, b) => {
+      return new Date(b.LastModified) - new Date(a.LastModified);
+    });
+
+
 
   // Function to generate image URLs
   function generateImageUrl(key) {
@@ -43,14 +44,14 @@ do {
   }
 
   // Extracting keys from the images response
-  const imageKeys = sortedImages.Contents.map(image => image.Key);
+  const imageKeys = sortedObjects?.map(image => image.Key);
 
   // Generate image URLs and add them to the result array
   const batchImageUrls = imageKeys.map(key => generateImageUrl(key));
   imageUrls.push(...batchImageUrls);
 
   // Set ContinuationToken for the next iteration
-  continuationToken = sortedImages.NextContinuationToken;
+  continuationToken = images.NextContinuationToken;
 
 } while (continuationToken);
     return imageUrls;
