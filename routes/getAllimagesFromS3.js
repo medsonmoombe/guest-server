@@ -24,7 +24,7 @@ async function getAllImagesFromS3() {
     const params = {
       Bucket: bucketName,
       Delimiter: '/',
-      MaxKeys: 5,
+      MaxKeys: 500,
       ContinuationToken: continuationToken
     };
 
@@ -38,7 +38,6 @@ async function getAllImagesFromS3() {
     // Extracting keys from the images response
     const imageKeys = images.Contents.map(image => image.Key);
 
-    console.log('imageKeys', imageKeys)
 
     const sortedImageKeys = imageKeys.sort((a, b) => {
       // Extract date and time from the image key
@@ -53,11 +52,9 @@ async function getAllImagesFromS3() {
       return dateTimeB - dateTimeA; // Sort by most recent first
   });
 
-    console.log('sortedImageKeys', sortedImageKeys);
-
     // Generate image URLs and add them to the result array
     const batchImageUrls = sortedImageKeys.map(key => generateImageUrl(key));
-    imageUrls.push(...batchImageUrls);
+    imageUrls.push(...batchImageUrls)
 
     // Set ContinuationToken for the next iteration
     continuationToken = images.NextContinuationToken;
