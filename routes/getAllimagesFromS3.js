@@ -38,19 +38,20 @@ async function getAllImagesFromS3() {
     // Extracting keys from the images response
     const imageKeys = images.Contents.map(image => image.Key);
 
-    // Sort the image keys
     const sortedImageKeys = imageKeys.sort((a, b) => {
       // Extract date and time from the image key
-      const [dateA, timeA] = a?.split('_')[0]?.split('-').concat(a.split('_')[1]?.split('-'));
-      const [dateB, timeB] = b?.split('_')[0]?.split('-').concat(b.split('_')[1]?.split('-'));
+      const [dateA, timeA] = a.split('_').slice(0, 2);
+      const [dateB, timeB] = b.split('_').slice(0, 2);
 
       // Compare date and time in reverse order to get new uploaded images first
       if (dateA !== dateB) {
-        return dateA.localeCompare(dateB); // Sort by date in ascending order
+          return dateB.localeCompare(dateA); // Sort by date in descending order
       } else {
-        return timeA.localeCompare(timeB); // If dates are the same, sort by time in ascending order
+          return timeB.localeCompare(timeA); // If dates are the same, sort by time in descending order
       }
-    });
+  });
+
+    console.log('sortedImageKeys', sortedImageKeys);
 
     // Generate image URLs and add them to the result array
     const batchImageUrls = sortedImageKeys.map(key => generateImageUrl(key));
