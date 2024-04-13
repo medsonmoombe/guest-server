@@ -59,8 +59,7 @@ async function getAllImagesFromS3() {
     // Set ContinuationToken for the next iteration
     continuationToken = images.NextContinuationToken;
   } while (continuationToken);
-  console.log("REVERSED", imageUrls.reverse())
-  return imageUrls;
+  return imageUrls.reverse();
 }
 
 
