@@ -22,14 +22,14 @@ async function getS3buckeckUrl() {
   // Generate a random string
   const randomString = (await randomBytes(5)).toString('hex');
   
-  // Get the current date and time
+  // Get the current date and time in the required format
   const now = new Date();
   const formattedDate = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`;
   const formattedTime = `${now.getHours().toString().padStart(2, '0')}-${now.getMinutes().toString().padStart(2, '0')}-${now.getSeconds().toString().padStart(2, '0')}`;
 
   // Combine date, time, and random string to form the imageName
   const imageName = `${formattedDate}_${formattedTime}_${randomString}`;
-  
+
     const params = {
         Bucket: bucketName,
         Key: imageName,
