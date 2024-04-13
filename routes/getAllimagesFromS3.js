@@ -44,11 +44,11 @@ async function getAllImagesFromS3() {
       const [dateA, timeA] = a?.split('_')[0]?.split('-').concat(a.split('_')[1]?.split('-'));
       const [dateB, timeB] = b?.split('_')[0]?.split('-').concat(b.split('_')[1]?.split('-'));
 
-      // Compare date and time
+      // Compare date and time in reverse order to get new uploaded images first
       if (dateA !== dateB) {
-        return dateB.localeCompare(dateA); // Sort by date in descending order
+        return dateA.localeCompare(dateB); // Sort by date in ascending order
       } else {
-        return timeB.localeCompare(timeA); // If dates are the same, sort by time in descending order
+        return timeA.localeCompare(timeB); // If dates are the same, sort by time in ascending order
       }
     });
 
