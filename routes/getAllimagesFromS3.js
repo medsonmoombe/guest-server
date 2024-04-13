@@ -11,51 +11,57 @@ const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY
 
 
 const s3 = new aws.S3({
-    region,
-    accessKeyId,
-    secretAccessKey,
-    signatureVersion: 'v4'
-    });
+  region,
+  accessKeyId,
+  secretAccessKey,
+  signatureVersion: 'v4'
+});
 
 async function getAllImagesFromS3() {
-
-const imageUrls = [];
+  const imageUrls = [];
   let continuationToken = null;
-do {
-  const params = {
-    Bucket: bucketName,
-    Delimiter: '/',
-    MaxKeys: 5,
-    ContinuationToken: continuationToken
-  };
+  do {
+    const params = {
+      Bucket: bucketName,
+      Delimiter: '/',
+      MaxKeys: 5,
+      ContinuationToken: continuationToken
+    };
 
-  const images = await s3.listObjectsV2(params).promise();
+    const images = await s3.listObjectsV2(params).promise();
 
-    // Sort the objects by LastModified date in descending order
-    const sortedObjects = images.Contents.sort((a, b) => {
-      return new Date(b.LastModified) - new Date(a.LastModified);
+    // Function to generate image URLs
+    function generateImageUrl(key) {
+      return `https://${bucketName}.s3.${region}.amazonaws.com/${key}`;
+    }
+
+    // Extracting keys from the images response
+    const imageKeys = images.Contents.map(image => image.Key);
+
+    // Sort the image keys
+    const sortedImageKeys = imageKeys.sort((a, b) => {
+      // Extract date and time from the image key
+      const [dateA, timeA] = a?.split('_')[0]?.split('-').concat(a.split('_')[1]?.split('-'));
+      const [dateB, timeB] = b?.split('_')[0]?.split('-').concat(b.split('_')[1]?.split('-'));
+
+      // Compare date and time
+      if (dateA !== dateB) {
+        return dateB.localeCompare(dateA); // Sort by date in descending order
+      } else {
+        return timeB.localeCompare(timeA); // If dates are the same, sort by time in descending order
+      }
     });
 
+    // Generate image URLs and add them to the result array
+    const batchImageUrls = sortedImageKeys.map(key => generateImageUrl(key));
+    imageUrls.push(...batchImageUrls);
 
-
-  // Function to generate image URLs
-  function generateImageUrl(key) {
-    return `https://${bucketName}.s3.${region}.amazonaws.com/${key}`;
-  }
-
-  // Extracting keys from the images response
-  const imageKeys = sortedObjects?.map(image => image.Key);
-
-  // Generate image URLs and add them to the result array
-  const batchImageUrls = imageKeys.map(key => generateImageUrl(key));
-  imageUrls.push(...batchImageUrls);
-
-  // Set ContinuationToken for the next iteration
-  continuationToken = images.NextContinuationToken;
-
-} while (continuationToken);
-    return imageUrls;
+    // Set ContinuationToken for the next iteration
+    continuationToken = images.NextContinuationToken;
+  } while (continuationToken);
+  return imageUrls;
 }
+
 
 
 file.get('/allImages', async (req, res) => {
