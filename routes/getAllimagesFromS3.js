@@ -67,6 +67,9 @@ async function getAllImagesFromS3() {
 file.get('/allImages', async (req, res) => {
   try {
     const images = await getAllImagesFromS3()
+    // if (images.length === 0 || !images) {
+    //   return res.status(404).json([]);
+    // }
     return res.status(200).json({ images })
   } catch (error) {
     console.error('Error retrieving file:', error);
