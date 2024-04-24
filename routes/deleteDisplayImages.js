@@ -22,10 +22,7 @@ file.delete('/delete-display-images', async (req, res) => {
     const key = req.query.key;
     const params = {
         Bucket: bucketName,
-        Delimiter: '/',
-        // specify the folder name from s3://wedding-photo-collection/carousel-images/
-        Prefix: 'carousel-images/',
-        Key: key
+        Key: 'carousel-images/' +  key
     };
 
     try {
