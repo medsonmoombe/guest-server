@@ -10,6 +10,7 @@ const displayImages = require("./getDisplayImages");
 const deleteImages = require("./deleteImagesToS3");
 const getUsersUploads = require("./getUsersUploads");
 const deleteDisplayImages = require("./deleteDisplayImages");
+const deleteUsersImages = require("./deleteUsersImages");
 routes.get("/", async function (req, res) { 
       res.send(`Api running..!`); 
 });
@@ -20,6 +21,7 @@ routes.use("/", getPhotos);
 routes.use("/", deleteImages);
 routes.use("/", displayImages);
 routes.use("/", deleteDisplayImages);
+routes.use("/", deleteUsersImages);
 routes.use("/", displayUrl);
 routes.use("/", getUsersUploads);
 routes.use("/", getUsersUrl);
